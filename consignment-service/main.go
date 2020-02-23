@@ -8,7 +8,8 @@ import (
 	"context"
 
 	pb "github.com/mgeri/shippy/consignment-service/proto/consignment"
-	"github.com/micro/go-micro"
+
+	"github.com/micro/go-micro/v2"
 )
 
 type repository interface {
@@ -28,6 +29,7 @@ func (repo *Repository) Create(consignment *pb.Consignment) (*pb.Consignment, er
 	defer repo.mu.Unlock()
 	updated := append(repo.consignments, consignment)
 	repo.consignments = updated
+
 	return consignment, nil
 }
 
@@ -49,8 +51,7 @@ type service struct {
 // CreateConsignment - we created just one method on our service,
 // which is a create method, which takes a context and a request as an
 // argument, these are handled by the gRPC server.
-func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment, res *pb.Response) error {
-
+func (s *service) CreateConsignment(_ context.Context, req *pb.Consignment, res *pb.Response) error {
 	// Save our consignment
 	consignment, err := s.repo.Create(req)
 	if err != nil {
@@ -61,17 +62,19 @@ func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment, re
 	// protobuf definition.
 	res.Created = true
 	res.Consignment = consignment
+
 	return nil
 }
 
-func (s *service) GetConsignments(ctx context.Context, req *pb.GetRequest, res *pb.Response) error {
+// GetConsignments - return all consignments
+func (s *service) GetConsignments(_ context.Context, _ *pb.GetRequest, res *pb.Response) error {
 	consignments := s.repo.GetAll()
 	res.Consignments = consignments
+
 	return nil
 }
 
 func main() {
-
 	repo := &Repository{}
 
 	// Create a new service. Optionally include some options here.
@@ -85,7 +88,7 @@ func main() {
 	srv.Init()
 
 	// Register handler
-	pb.RegisterShippingServiceHandler(srv.Server(), &service{repo})
+	_ = pb.RegisterShippingServiceHandler(srv.Server(), &service{repo})
 
 	// Run the server
 	if err := srv.Run(); err != nil {
