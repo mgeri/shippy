@@ -3,6 +3,9 @@
 # Created by https://www.gitignore.io/api/visualstudiocode,linux
 # Edit at https://www.gitignore.io/?templates=visualstudiocode,linux
 
+## OsX
+.DS_Store
+
 ### Linux ###
 *~
 
@@ -24,6 +27,9 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+### Idea ###
+.idea
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
