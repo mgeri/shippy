@@ -6,5 +6,6 @@ replace github.com/coreos/go-systemd => github.com/coreos/go-systemd/v22 v22.0.0
 
 require (
 	github.com/golang/protobuf v1.3.2
+	github.com/mgeri/shippy/vessel-service v0.0.0-20200229163553-864357e47907
 	github.com/micro/go-micro/v2 v2.2.0
 )
