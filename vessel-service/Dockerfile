@@ -12,7 +12,7 @@ WORKDIR /app
 COPY . .
 
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o shippy-consignment-service
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o shippy-vessel-service
 #RUN GOOS=linux go build -o shippy-service-consignment
 
 # Run container
@@ -22,6 +22,6 @@ RUN apk --no-cache add ca-certificates
 
 RUN mkdir /app
 WORKDIR /app
-COPY --from=builder /app/shippy-consignment-service .
+COPY --from=builder /app/shippy-vessel-service .
 
-CMD ["./shippy-consignment-service"]
+CMD ["./shippy-vessel-service"]
