@@ -110,7 +110,7 @@ func main() {
 	vesselService := vesselProto.NewVesselService("shippy.vessel.service", srv.Client())
 
 	// Register handler
-	pb.RegisterShippingServiceHandler(srv.Server(), &service{repo, vesselService})
+	_ = pb.RegisterShippingServiceHandler(srv.Server(), &service{repo, vesselService})
 
 	// Run the server
 	if err := srv.Run(); err != nil {
