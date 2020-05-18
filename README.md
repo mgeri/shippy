@@ -1,11 +1,16 @@
-# shippy
-Golang training microservices to learn how to write microservices making use of protobuf and gRPC as the underlying transport protocol
+# Shippy
+Golang training microservices to learn how to write microservices making use of protobuf and gRPC as the underlying transport protocol.
+
+It uses:
+* go micro v2 framework
+* gRPC
+* mongoDB
 
 
-## grpc and go-micro v2 
+## gRPC and go-micro v2 
 Uses grpc and go-micro v2
 
-To install grps see online doc
+To install grpc see online doc
 
 To install go micro protoc gen:
 

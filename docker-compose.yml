@@ -5,6 +5,11 @@ services:
   shippy-consignment-cli:
     container_name: "shippy-consignment-cli"
     build: ./consignment-cli
+    depends_on:
+      - shippy-consignment-service
+      - shippy-vessel-service
+    networks:
+      - shippy-backend-tier
     environment:
       MICRO_REGISTRY: "mdns"
 
@@ -14,6 +19,11 @@ services:
     build: ./consignment-service
     ports:
       - 50051:50051 # exposing this port on the docker network only, not host
+    depends_on:
+      - shippy-datastore
+    networks:
+      - shippy-backend-tier
+      - shippy-datastore-tier
     environment:
       MICRO_ADDRESS: ":50051"
       MICRO_REGISTRY: "mdns"
@@ -25,6 +35,11 @@ services:
     build: ./vessel-service
     ports:
       - 50052:50051 # exposing this port on the docker network only, not host
+    depends_on:
+      - shippy-datastore
+    networks:
+      - shippy-backend-tier
+      - shippy-datastore-tier
     environment:
       MICRO_ADDRESS: ":50051"
       MICRO_REGISTRY: "mdns"
@@ -33,17 +48,19 @@ services:
   shippy-datastore:
     image: mongo:latest
     container_name: "shippy-datastore"
-#    environment:
-#      - MONGO_DATA_DIR=/data/db
-#      - MONGO_LOG_DIR=/dev/null
+ #   environment:
+ #     - MONGO_DATA_DIR=/data/db
+ #     - MONGO_LOG_DIR=/dev/null
 #    volumes:
 #      - ./data/db:/data/db # ensures data persistence between restarting
     ports:
       - 27017:27017
+    networks:
+      - shippy-datastore-tier
 #    command: mongod --logpath=/dev/null
 
 networks:
-  shippy-consignment-datastore-tier:
-    name: shippy-consignment-datastore-tier
+  shippy-datastore-tier:
+    name: shippy-datastore-tier
   shippy-backend-tier:
     name: shippy-backend-tier

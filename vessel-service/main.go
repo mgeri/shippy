@@ -26,6 +26,8 @@ func createDummyData(repo *VesselRepository) {
 
 func main() {
 
+	log.Println("starting vessel service...")
+
 	// Create a new service. Optionally include some options here.
 	srv := micro.NewService(
 		// This name must match the package name given in your protobuf definition
