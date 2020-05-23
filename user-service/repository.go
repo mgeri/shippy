@@ -12,7 +12,7 @@ type Repository interface {
 	GetAll(ctx context.Context) ([]*pb.User, error)
 	Get(ctx context.Context, id string) (*pb.User, error)
 	Create(ctx context.Context, user *pb.User) error
-	GetByEmailAndPassword(ctx context.Context, user *pb.User) (*pb.User, error)
+	GetByEmail(ctx context.Context, user *pb.User) (*pb.User, error)
 }
 
 type UserRepository struct {
@@ -36,11 +36,14 @@ func (repo *UserRepository) Get(ctx context.Context, id string) (*pb.User, error
 	return user, nil
 }
 
-func (repo *UserRepository) GetByEmailAndPassword(ctx context.Context, user *pb.User) (*pb.User, error) {
-	if err := repo.db.First(&user).Error; err != nil {
+func (repo *UserRepository) GetByEmail(ctx context.Context, user *pb.User) (*pb.User, error) {
+	userOut := &pb.User{
+		Email: user.Email,
+	}
+	if err := repo.db.First(userOut).Error; err != nil {
 		return nil, err
 	}
-	return user, nil
+	return userOut, nil
 }
 
 func (repo *UserRepository) Create(ctx context.Context, user *pb.User) error {

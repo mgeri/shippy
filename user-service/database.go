@@ -7,13 +7,32 @@ import (
 	"os"
 )
 
+const (
+	defaultHost     = "localhost"
+	defaultUser     = "postgres"
+	defaultDBName   = "postgres"
+	defaultPassword = "postgres"
+)
+
 func CreateConnection() (*gorm.DB, error) {
 
 	// Get database details from environment variables
 	host := os.Getenv("DB_HOST")
+	if host == "" {
+		host = defaultHost
+	}
 	user := os.Getenv("DB_USER")
+	if user == "" {
+		user = defaultUser
+	}
 	DBName := os.Getenv("DB_NAME")
+	if DBName == "" {
+		DBName = defaultDBName
+	}
 	password := os.Getenv("DB_PASSWORD")
+	if password == "" {
+		password = defaultPassword
+	}
 
 	return gorm.Open(
 		"postgres",

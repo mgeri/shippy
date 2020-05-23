@@ -84,6 +84,8 @@ services:
       - 5432:5432
     networks:
       - shippy-datastore-tier
+    environment:
+      POSTGRES_PASSWORD: postgres
 
 networks:
   shippy-datastore-tier:
