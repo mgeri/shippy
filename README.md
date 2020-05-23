@@ -1,10 +1,12 @@
 # Shippy
-Golang training microservices to learn how to write microservices making use of protobuf and gRPC as the underlying transport protocol.
+Golang training microservices to learn how to write microservices making use of protobuf and gRPC as the underlying transport protocol and NATS for event brokering.
 
 It uses:
 * go micro v2 framework
 * gRPC
 * mongoDB
+* PostgreSQL 
+* NATS for event brokering
 
 
 ## gRPC and go-micro v2 
@@ -17,5 +19,4 @@ To install go micro protoc gen:
 `go get github.com/micro/protoc-gen-micro/v2` 
 
 See [https://github.com/micro/protoc-gen-micro]https://github.com/micro/protoc-gen-micro
-
 
