@@ -45,6 +45,24 @@ services:
       MICRO_REGISTRY: "mdns"
       DB_HOST: "mongodb://shippy-datastore:27017"
 
+  user-service:
+    build: ./user-service
+    ports:
+      - 50053:50051
+    depends_on:
+      - shippy-database
+    networks:
+      - shippy-backend-tier
+      - shippy-datastore-tier
+    environment:
+      MICRO_ADDRESS: ":50051"
+      MICRO_REGISTRY: "mdns"
+      DB_NAME: "postgres"
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+
   shippy-datastore:
     image: mongo:latest
     container_name: "shippy-datastore"
@@ -58,6 +76,14 @@ services:
     networks:
       - shippy-datastore-tier
 #    command: mongod --logpath=/dev/null
+
+  shippy-database:
+    image: postgres
+    container_name: "shippy-database"
+    ports:
+      - 5432:5432
+    networks:
+      - shippy-datastore-tier
 
 networks:
   shippy-datastore-tier:
