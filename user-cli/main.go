@@ -1,24 +1,23 @@
 package main
 
 import (
+	"github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/config/cmd"
 	"log"
 	"os"
 
 	"context"
 	pb "github.com/mgeri/shippy/user-service/proto/user"
-
-	micro "github.com/micro/go-micro/v2"
 )
 
 func main() {
 
-	// Create a new service
-	service := micro.NewService(micro.Name("shippy.user.cli"))
-	// Initialise the client and parse command line flags
-	service.Init()
+	// Micro command line tool init (read gomicro env)
+	// Note: when it's the same of srv.Init() but for command cli
+	cmd.Init()
 
 	// Create new greeter client
-	client := pb.NewUserService("shippy.user.service", service.Client())
+	userSrvClient := pb.NewUserService("shippy.user.service", client.DefaultClient)
 
 	name := "Marco Geri"
 	email := "marco.geri.pi@gmail.com"
@@ -27,7 +26,7 @@ func main() {
 
 	log.Println(name, email, password)
 
-	r, err := client.Create(context.Background(), &pb.User{
+	r, err := userSrvClient.Create(context.Background(), &pb.User{
 		Name:     name,
 		Email:    email,
 		Password: password,
@@ -38,7 +37,7 @@ func main() {
 	}
 	log.Printf("Created: %s", r.User.Id)
 
-	getAll, err := client.GetAll(context.Background(), &pb.Request{})
+	getAll, err := userSrvClient.GetAll(context.Background(), &pb.Request{})
 	if err != nil {
 		log.Fatalf("Could not list users: %v", err)
 	}
@@ -46,7 +45,7 @@ func main() {
 		log.Println(v)
 	}
 
-	authResponse, err := client.Auth(context.Background(), &pb.User{
+	authResponse, err := userSrvClient.Auth(context.Background(), &pb.User{
 		Email:    email,
 		Password: password,
 	})
