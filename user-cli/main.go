@@ -1,8 +1,7 @@
 package main
 
 import (
-	"github.com/micro/go-micro/v2/client"
-	"github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/go-micro/v2"
 	"log"
 	"os"
 
@@ -14,10 +13,15 @@ func main() {
 
 	// Micro command line tool init (read gomicro env)
 	// Note: when it's the same of srv.Init() but for command cli
-	cmd.Init()
+	// cmd.Init()
+
+	// Create a new service
+	service := micro.NewService(micro.Name("shippy.user.cli"))
+	// Initialise the client and parse command line flags
+	service.Init()
 
 	// Create new greeter client
-	userSrvClient := pb.NewUserService("shippy.user.service", client.DefaultClient)
+	userSrvClient := pb.NewUserService("shippy.user.service", service.Client())
 
 	name := "Marco Geri"
 	email := "marco.geri.pi@gmail.com"
